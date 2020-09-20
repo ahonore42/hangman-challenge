@@ -5,6 +5,7 @@ def new_game():
             print('Would you like to play again? (yes/no)')
             answer = input()
             if answer == 'yes':
+                # restart the hangman game
                 return hangman()
             elif answer == 'no':
                 print('')
@@ -39,11 +40,13 @@ def hangman():
     # count variable to store wrong guesses
 
     def make_guesses(secret, guess, display, hangman, count, ls):
-        # BASE case to determine if the game
-        # has been won or lost
+        # first, let's print our current hangman game state for each turn
         for i in hangman:
             print(i)
+        # BASE CASE to determine if the game has been won or lost
         test = display.split(' ')
+        # check for a win by checking to see if any _ are left in the answer
+        # if there are not, the word has been guessed correctly
         if '_' not in test:
             answer = ''.join(test)
             print('')
@@ -51,29 +54,42 @@ def hangman():
             print('You guessed right! No hanging today.')
             return new_game()
         elif count > 6:
+        # if the number of wrong guesses is over 6, game over
             print('')
             print('Hangman. GG no re.')
             return new_game()
+        
+        # RECURSIVE CASE - repeat this until the game has met the conditions of the BASE CASE
         print('')
         print(display)
+        # Show the current display of user's guesses
         print('')
         print('Make a guess')
         letter = input()[:1]
+        # A guess is equal to the first character of any input size
         if letter in secret:
+            # if the guess letter is found in the secret word
             for i in range(len(secret)):
+                # check all indices of the secret word
                 if secret[i] == letter:
-                    # print(letter)
+                    # and if the value at an index in the secret word matches the letter
                     x = display.split(' ')
+                    # split the display '_ _ _ ' list by spaces into a list ['_','_','_']
                     if x[i] == '_':
-                        # print(x[i])
+                        # then, if the value at an index in the new display list is unchanged
+                        # i.e., still '_', replace it with the secret word's letter at each index
+                        # that matches
                         x[i] = secret[i]
-                        # print(x[i])
+                    # after replacing the values, join the new list ['match','_','_']
+                    # back into the original display string format 'match _ _ '
                     display = ' '.join(x)               
         else:
             print('The crowd looks on with fervor')
             count += 1
-            print(count)
+            # Bad guess, add one to the wrong guesses count
             for i in range(0, len(hangman)):
+                # replace values in the hangman game state at each count of wrong guesses
+                # to reflect the current hangman game state
                 if count == 1:
                         if hangman[4] == '|':
                             hangman[4] = '|  /'
@@ -96,7 +112,10 @@ def hangman():
                     if hangman[2] == '|   0':
                             hangman[1] = '|   |';
                             hangman[5] = '[]    []'
+        # return the make_guesses function with updated values
         return make_guesses(secret, guess, display, hangman, count, ls)
+    # start the guessing game loop
     make_guesses(secret, guess, display, hangman, count, ls)
+# start hangman on running the file
 hangman()
 
