@@ -65,8 +65,18 @@ def hangman():
         # Show the current display of user's guesses
         print('')
         print('Make a guess')
-        letter = input()[:1]
-        # A guess is equal to the first character of any input size
+        letter = input().lower()
+        # make all inputs lower case, to properly compare with the secret word
+        if letter == secret:
+            # If a user magically guesses the word, they win
+            print('')
+            print(letter)
+            print('You guessed right! No hanging today.')
+            return new_game()
+        else:
+            letter = letter[:1]
+            # Otherwise, a guess is equal to the first character of any input size
+
         if letter in secret:
             # if the guess letter is found in the secret word
             for i in range(len(secret)):
