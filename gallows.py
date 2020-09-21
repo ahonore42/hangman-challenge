@@ -57,6 +57,7 @@ def hangman():
         # if the number of wrong guesses is over 6, game over
             print('')
             print('Hangman. GG no re.')
+            print(f'The correct answer was: {secret}')
             return new_game()
         
         # RECURSIVE CASE - repeat this until the game has met the conditions of the BASE CASE
