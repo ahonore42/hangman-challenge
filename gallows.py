@@ -21,6 +21,8 @@ def hangman():
     # make a list of words to be used at random in the game
     secret = ls[round((len(ls)-1)*random())]
     # choose a random word
+    guess = []
+    # empty guess list to add letters to
     display = ''
     for i in secret:
         display += '_ '
@@ -37,7 +39,7 @@ def hangman():
     count = 0
     # count variable to store wrong guesses
 
-    def make_guesses(secret, display, hangman, count, ls):
+    def make_guesses(secret, guess, display, hangman, count, ls):
         # first, let's print our current hangman game state for each turn
         for i in hangman:
             print(i)
@@ -60,6 +62,8 @@ def hangman():
         # RECURSIVE CASE - repeat this until the game has met the conditions of the BASE CASE
         print('')
         print(display)
+        if len(guess) > 0:
+            print(f"Your guesses: {' '.join(guess)}")
         # Show the current display of user's guesses
         print('')
         print('Make a guess')
@@ -74,6 +78,12 @@ def hangman():
         else:
             letter = letter[:1]
             # Otherwise, a guess is equal to the first character of any input size
+            if letter in guess:
+                print('')
+                print('You already guessed that letter.')
+                return make_guesses(secret, guess, display, hangman, count, ls)
+            else:
+                guess.append(letter)
 
         if letter in secret:
             # if the guess letter is found in the secret word
@@ -121,9 +131,9 @@ def hangman():
                             hangman[1] = '|   |';
                             hangman[5] = '[]    []'
         # return the make_guesses function with updated values
-        return make_guesses(secret, display, hangman, count, ls)
+        return make_guesses(secret, guess, display, hangman, count, ls)
     # start the guessing game loop
-    make_guesses(secret, display, hangman, count, ls)
+    make_guesses(secret, guess, display, hangman, count, ls)
 # start hangman on running the file
 hangman()
 
